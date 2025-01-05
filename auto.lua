@@ -11,7 +11,7 @@ _G.AutoRob = true
 queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/hashierholmes/TESTasa/refs/heads/main/auto.lua'))()")
 
 for i = 1,100 do
-   print("Made by NtOpenProcess and deni210 (on dc)")
+   print("@Made by NtOpenProcess and deni210 (on dc)")
 end
 
 function shop()
