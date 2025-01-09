@@ -107,32 +107,36 @@ local function findRobbery()
 end
 
 -- Execute robbery sequence
-teleportTo(-82, 86, 807)
-task.wait(0.5)
+local function robPlaces()
+    teleportTo(-82, 86, 807)
+    task.wait(0.5)
 
-for _, box in ipairs(workspace.JewelryStore.JewelryBoxes:GetChildren()) do
-    task.spawn(function()
-        for _ = 1, 5 do
-            workspace.JewelryStore.JewelryBoxes.JewelryManager.Event:FireServer(box)
+    for _, box in ipairs(workspace.JewelryStore.JewelryBoxes:GetChildren()) do
+        task.spawn(function()
+            for _ = 1, 5 do
+                workspace.JewelryStore.JewelryBoxes.JewelryManager.Event:FireServer(box)
+            end
+        end)
+    end
+
+    task.wait(2)
+    teleportTo(2115, 26, 420)
+    task.wait(1)
+
+    repeat
+        local robberyTarget = findRobbery()
+        if robberyTarget then
+            for _ = 1, 20 do
+                local pos = robberyTarget:GetPivot().Position
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pos.x, pos.y + 5, pos.z)
+                findRemoteEvent(robberyTarget):FireServer()
+                task.wait()
+            end
         end
-    end)
+    until not findRobbery()
+
+    task.wait(1)
+    serverHop()
 end
 
-task.wait(2)
-teleportTo(2115, 26, 420)
-task.wait(1)
-
-repeat
-    local robberyTarget = findRobbery()
-    if robberyTarget then
-        for _ = 1, 20 do
-            local pos = robberyTarget:GetPivot().Position
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pos.x, pos.y + 5, pos.z)
-            findRemoteEvent(robberyTarget):FireServer()
-            task.wait()
-        end
-    end
-until not findRobbery()
-
-task.wait(1)
-serverHop()
+robPlaces()
